@@ -66,14 +66,84 @@ def DisplayFrequentValues():
         print(train_df[column].value_counts())
         print()
 
+def GraphingDataSetupForAge(x1, y1, x2, y2, x3, y3, x4, y4, groupOne, groupTwo, columnName):
+    for i in range(90):
+        x1.append(i)
+        y1.append(len(groupOne.loc[groupOne[columnName] == i]))
+        x2.append(i)
+        y2.append(len(groupTwo.loc[groupTwo[columnName] == i]))
+        x3.append(i)
+        y3.append(len(groupOne.loc[groupOne[columnName] == i]))
+        x4.append(i)
+        y4.append(len(groupTwo.loc[groupTwo[columnName] == i]))
+
+def AddGraph(graphData, col, row, width, x, y, label, title):
+    if len(graphData) <= 1:
+        graphData[col].bar(x, y, width=width)
+        graphData[col].set_xlabel(label)
+        graphData[col].set_title(title)
+    else:
+        graphData[col,row].bar(x, y, width=width)
+        graphData[col,row].set_xlabel(label)
+        graphData[col,row].set_title(title)
+
+def CreateGraph(rows, cols, w, h, mainLabel, columnName, compareVals):
+    nonSurvivors = train_df.loc[train_df[columnName] == compareVals[0]]
+    survivors = train_df.loc[train_df[columnName] == compareVals[1]]
+
+    x1 = []
+    y1 = []
+    x2 = []
+    y2 = []
+    x3 = []
+    y3 = []
+    x4 = []
+    y4 = []
+
+    GraphingDataSetupForAge(x1, y1, x2, y2, x3, y3, x4, y4, nonSurvivors, survivors, mainLabel)
+
+    fig, axes = plt.subplots(nrows=rows, ncols=cols, figsize=(w, h))
+
+    # for y in range(rows):
+    #     for x in range(cols):
+    #         if rows == 2:
+    #             if y % 2 == 0:
+    #                 AddGraph(axes, y, x, 1.0, x1, y1, mainLabel, str(columnName) + ' = ' + str(compareVals[0]))
+    #             else:
+    #                 AddGraph(axes, y, x, 1.0, x1, y1, mainLabel, str(columnName) + ' = ' + str(compareVals[1]))
+
+    AddGraph(axes, 0, 0, 1.0, x1, y1, mainLabel, str(columnName) + ' = ' + str(compareVals[0]))
+    AddGraph(axes, 0, 1, 1.0, x2, y2, mainLabel, str(columnName) + ' = ' + str(compareVals[1]))
+    AddGraph(axes, 1, 0, 1.0, x3, y3, mainLabel, str(columnName) + ' = ' + str(compareVals[0]))
+    AddGraph(axes, 1, 1, 1.0, x4, y4, mainLabel, str(columnName) + ' = ' + str(compareVals[1]))
+
+    fig.tight_layout()
+
+def ShowCurrentGraph():
+    plt.show()
+
+def ChangeData(columnName, oldValue, newValue):
+    train_df.loc[train_df[columnName] == oldValue, columnName] = newValue
+
+def ChangeColumnName(oldColName, newColName):
+    train_df.rename(columns = {oldColName : newColName}, inplace = True)
+
+def FillInNullOrMissingData(columnName):
+    if columnName == 'Fare':
+        train_df[columnName].fillna(train_df[columnName].mode(), inplace=True)
+    elif columnName == 'Embarked':
+        train_df[columnName].fillna(train_df[columnName].mode(), inplace=True)
+    else:
+        train_df[columnName].fillna(train_df[columnName].mean(), inplace=True)
+
 def Main():
     SetupData()
 
     #shows count and datatype
-    #ShowDataStats()
+    # ShowDataStats()
 
     #shows high level calculations mean, std, etc
-    #DescribeData()
+    # DescribeData()
 
     #Group data for further analysis
     #Used for comparing the survival rate based on Pclass
@@ -87,15 +157,41 @@ def Main():
     # GroupData('Sex', "male")
 
     #This is to handle those points of freq, count, unique values
-    #DisplayValueCounts()
-    #DisplayUniqueValues()
-    #DisplayFrequentValues()
+    # DisplayValueCounts()
+    # DisplayUniqueValues()
+    # DisplayFrequentValues()
 
-    x = [1,2,3]
-    y = [2,4,6]
+    #creating and displaying bar graphs
+    # CreateGraph(2, 2, 6, 4, 'Age', 'Survived', [0, 1])
+    # ShowCurrentGraph()
 
-    plt.plot(x, y)
-    plt.show()
+    #Changing data
+    # ChangeData('Sex', 'female', 1)
+    # ChangeData('Sex', 'male', 0)
+    # ChangeColumnName('Sex', 'Gender')
+
+    # print()
+    # print(train_df.head(5))
+    # print()
+
+    #Filling in null values
+    # FillInNullOrMissingData('Age')
+
+    # print()
+    # print(train_df['Age'])
+    # print()
+
+    # FillInNullOrMissingData('Embarked')
+
+    # print()
+    # print(train_df.loc[train_df['PassengerId'] == 62])
+    # print()
+
+    # FillInNullOrMissingData('Fare')
+
+    # print()
+    # print(train_df.info())
+    # print()
 
 if __name__ == "__main__":
     Main()
