@@ -139,33 +139,33 @@ def FillInNullOrMissingData(columnName):
 def Main():
     SetupData()
 
-    #shows count and datatype
+    ######## shows count and datatype
     # ShowDataStats()
 
-    #shows high level calculations mean, std, etc
+    ######## shows high level calculations mean, std, etc
     # DescribeData()
 
-    #Group data for further analysis
-    #Used for comparing the survival rate based on Pclass
+    ######## Group data for further analysis
+    ######## Used for comparing the survival rate based on Pclass
     # print()
     # GroupData('Pclass', 1)
     # GroupData('Pclass', 2)
     # GroupData('Pclass', 3)
-    #Used for comparing the survival rate based on sex
+    ######## Used for comparing the survival rate based on sex
     # print()
     # GroupData('Sex', "female")
     # GroupData('Sex', "male")
 
-    #This is to handle those points of freq, count, unique values
+    ######## This is to handle those points of freq, count, unique values
     # DisplayValueCounts()
     # DisplayUniqueValues()
     # DisplayFrequentValues()
 
-    #creating and displaying bar graphs
+    ######## creating and displaying bar graphs
     # CreateGraph(2, 2, 6, 4, 'Age', 'Survived', [0, 1])
     # ShowCurrentGraph()
 
-    #Changing data
+    ######## Changing data
     # ChangeData('Sex', 'female', 1)
     # ChangeData('Sex', 'male', 0)
     # ChangeColumnName('Sex', 'Gender')
@@ -174,7 +174,7 @@ def Main():
     # print(train_df.head(5))
     # print()
 
-    #Filling in null values
+    ######## Filling in null values
     # FillInNullOrMissingData('Age')
 
     # print()
